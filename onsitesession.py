@@ -21,6 +21,12 @@ class OnSiteSession(requests.Session):
         r = super(OnSiteSession, self).request(method, url, **kwargs)
         return r
 
+    def lock(self, endpoint):
+        self.request('LOCK', endpoint)
+
+    def unlock(self, endpoint):
+        self.request('UNLOCK', endpoint)
+
     def logout(self):
         self.post('sessions/current/logout/')
 
