@@ -23,3 +23,7 @@ class OnSiteSession(requests.Session):
 
     def logout(self):
         self.post('sessions/current/logout/')
+
+    def close(self):
+        self.logout()
+        super(OnSiteSession, self).close()
