@@ -20,3 +20,6 @@ class OnSiteSession(requests.Session):
         url = "https://{0}/api/{1}".format(self.host, endpoint)
         r = super(OnSiteSession, self).request(method, url, **kwargs)
         return r
+
+    def logout(self):
+        self.post('sessions/current/logout/')
