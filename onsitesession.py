@@ -1,4 +1,5 @@
 import requests
+import xmldict
 
 
 class OnSiteSession(requests.Session):
@@ -19,6 +20,7 @@ class OnSiteSession(requests.Session):
             endpoint += '/'
         url = "https://{0}/api/{1}".format(self.host, endpoint)
         r = super(OnSiteSession, self).request(method, url, **kwargs)
+        r.xml = xmldict.XMLDict(r.text)
         return r
 
     def lock(self, endpoint):
