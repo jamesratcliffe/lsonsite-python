@@ -1,6 +1,5 @@
 import requests
-import xmltodict
-from xml.parsers.expat import ExpatError
+import xmldict
 
 
 class OnSiteSession(requests.Session):
@@ -21,12 +20,7 @@ class OnSiteSession(requests.Session):
             endpoint += '/'
         url = "https://{0}/api/{1}".format(self.host, endpoint)
         r = super(OnSiteSession, self).request(method, url, **kwargs)
-        try:
-            r.xml = xmltodict.parse(r.text)
-            r.prettyxml = xmltodict.unparse(r.xml, pretty=True)
-        except ExpatError:
-            r.xml = {}
-            r.prettyxml = ''
+        r.xml = xmldict.XMLDict(r.text)
         return r
 
     def lock(self, endpoint):
