@@ -8,7 +8,7 @@ class XMLDict(collections.OrderedDict):
     """Parse a string of XML to a dictionary. Prints as pretty XML."""
     def __init__(self, xml):
         try:
-            parsedxml = xmltodict.parse(xml)
+            parsedxml = xmltodict.parse(xml, xml_attribs=True)
         except ExpatError:
             pass
         else:
