@@ -6,13 +6,20 @@ from xml.parsers.expat import ExpatError
 
 class XMLDict(collections.OrderedDict):
     """Parse a string of XML to a dictionary. Prints as pretty XML."""
-    def __init__(self, xml):
-        try:
-            parsedxml = xmltodict.parse(xml, xml_attribs=True)
-        except ExpatError:
-            pass
-        else:
-            self.update(parsedxml)
+    def __init__(self, data):
+        super(XMLDict, self).__init__()
+        if isinstance(data, str):
+            try:
+                parsedxml = xmltodict.parse(data, xml_attribs=True)
+            except ExpatError:
+                pass
+            else:
+                self.update(parsedxml)
+        elif isinstance(data, dict):
+            self.update(data)
 
     def __str__(self):
-        return xmltodict.unparse(self, pretty=True)
+        try:
+            return xmltodict.unparse(self, pretty=True)
+        except ValueError:
+            return ""
