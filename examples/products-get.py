@@ -27,11 +27,20 @@ def main():
             'order_by': 'id:asc'}
         r = s.get('products', params=params)
         print(r.url)
-        print(r.xml['products']['product'][0]['code'])
-        for p in r.xml['products']['product']:
-            print('\n* ID: ' + p['@id'] + ' *')
-            print('Product Code: ' + p['code'])
-            print('Available Inventory: ' + p['inventory']['available'])
+        # Note that r.xml['products'] is None if there are no matches,
+        # so this part will raise an exception:
+        try:
+            print(r.xml['products']['product'][0]['code'])
+        except TypeError as e:
+            if r.xml['products']:
+                raise
+            else:
+                print("No matching Products found.")
+        else:
+            for p in r.xml['products']['product']:
+                print('\n* ID: ' + p['@id'] + ' *')
+                print('Product Code: ' + p['code'])
+                print('Available Inventory: ' + p['inventory']['available'])
         print('\n-----------------------------------------------------\n')
 
         print('Get an individual Product:\n')
