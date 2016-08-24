@@ -29,3 +29,19 @@ with lsonsite.OnSiteSession(HOST, PAPPID, USER_AGENT, USER, PW) as s:
     r = s.get('products/147')
     print(r.xml)
 ```
+
+## Examples
+
+Files with example code are included in `example/`. The examples use an xml config file, `examples/config.xml` to store information specific to your app.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<appconfig>
+    <pappid>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</pappid>
+    <user_agent>com.test.app/0.0</user_agent>
+    <host>localhost:9630</host>
+    <user>lightspeed</user>
+    <password>admin</password>
+</appconfig>
+
+```
