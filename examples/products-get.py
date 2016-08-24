@@ -33,7 +33,7 @@ def main():
             print(r.xml['products']['product'][0]['code'])
         except TypeError as e:
             if r.xml['products']:
-                raise
+                raise e
             else:
                 print("No matching Products found.")
         else:
@@ -45,10 +45,15 @@ def main():
 
         print('Get an individual Product:\n')
         r = s.get('products/2')
-        info = r.xml['product']
-        print('Code: ' + info['code'])
-        print('Description: ' + info['description']['#text'])
-        print('Sell')
+        try:
+            r.xml['product']
+        except KeyError:
+            print("No matching Products found.")
+        else:
+            info = r.xml['product']
+            print('Code: ' + info['code'])
+            print('Description: ' + info['description']['#text'])
+            print('Sell' + info['sell'])
         print('\n-----------------------------------------------------\n')
 
 if __name__ == '__main__':
