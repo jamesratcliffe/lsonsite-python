@@ -1,6 +1,9 @@
 import requests
+
 from .xmldict import XMLDict
 
+# Disable SSL Warnings
+requests.packages.urllib3.disable_warnings()
 
 class OnSiteSession(requests.Session):
     """Creates a Session to send requests to the OnSite public API.
@@ -12,7 +15,7 @@ class OnSiteSession(requests.Session):
         self.headers = {'X_PAPPID': pappid,
                         'User-Agent': user_agent}
         self.auth = (username, password)
-        self.verify = False
+        self.verify = '~/Desktop/server1.crt'
 
     def request(self, method, endpoint, **kwargs):
         endpoint = endpoint.lstrip('/')
