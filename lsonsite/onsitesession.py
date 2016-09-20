@@ -32,8 +32,8 @@ class OnSiteSession(requests.Session):
             r.raise_for_status()
         except requests.exceptions.RequestException as err:
             print(err)
-            # print("Response: " + r.text)
-            r.xml = XMLDict({})
+            print("Response: " + r.text)
+            raise(err)
         else:
             r.xml = XMLDict(r.text)
         return r
