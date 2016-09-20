@@ -48,7 +48,7 @@ def main():
         try:
             r.xml['product']
         except KeyError:
-            print("No matching Products found.")
+            pass
         else:
             info = r.xml['product']
             print('Code: ' + info['code'])

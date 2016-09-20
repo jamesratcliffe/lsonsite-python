@@ -28,7 +28,14 @@ class OnSiteSession(requests.Session):
             endpoint = endpoint.lstrip('/')
             url = self.base_url + endpoint
         r = super(OnSiteSession, self).request(method, url, **kwargs)
-        r.xml = XMLDict(r.text)
+        try:
+            r.raise_for_status()
+        except requests.exceptions.RequestException as err:
+            print(err)
+            print("Response: " + r.text)
+            raise(err)
+        else:
+            r.xml = XMLDict(r.text)
         return r
 
     def lock(self, endpoint):
