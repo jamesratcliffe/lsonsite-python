@@ -45,3 +45,9 @@ Files with example code are included in `example/`. The examples use an xml conf
 </appconfig>
 
 ```
+
+## Dependencies
+
+- Requests (2.11.0 or later)
+- xmltodict (tested on 0.10.2)
+- Pillow (Optional—only used by the included photo download example) (tested on 3.3.1)
