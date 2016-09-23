@@ -8,4 +8,6 @@ setup(
     author='James Ratcliffe',
     license='OSL',
     packages=['lsonsite'],
-    install_requires=['requests (==2.11.0)', 'xmltodict (==0.10.2)'])
+    install_requires=['requests (>=2.11.0)', 'xmltodict (==0.10.2)'],
+    extras_require={'Photo Example': ['Pillow (==3.3.1)']}
+)
