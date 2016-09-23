@@ -15,22 +15,16 @@ def main():
 
     # Open a Session
     with lsonsite.OnSiteSession(host, pappid, user_agent, user, pw) as s:
-        print('Get all Products and print prettified XML respose:\n')
-        r = s.get('products')
-        # print(r.text) # Raw text response
-        print(r.xml)
-        print('\n-----------------------------------------------------\n')
-
-        print('Filtering, sorting and working with the XMLDict result:\n')
+        print('# Filtering, sorting and working with the XMLDict result:\n')
         params = {
             'filter': '(code CONTAINS[cd] "Test" AND inventoried = 1 AND current = 1)',
             'order_by': 'id:asc'}
         r = s.get('products', params=params)
-        print(r.url)
+        print(r.url + '\n')
         # Note that r.xml['products'] is None if there are no matches,
         # so this part will raise an exception:
         try:
-            print(r.xml['products']['product'][0]['code'])
+            r.xml['products']['product'][0]['code']
         except TypeError as e:
             if r.xml['products']:
                 raise e
@@ -38,23 +32,32 @@ def main():
                 print("No matching Products found.")
         else:
             for p in r.xml['products']['product']:
-                print('\n* ID: ' + p['@id'] + ' *')
-                print('Product Code: ' + p['code'])
-                print('Available Inventory: ' + p['inventory']['available'])
-        print('\n-----------------------------------------------------\n')
+                print('- ID: ' + p['@id'])
+                print('  Product Code: ' + p['code'])
+                print('  Available Inventory: ' + p['inventory']['available'])
+        print('-----------------------------------------------------\n')
 
-        print('Get an individual Product:\n')
+        print('# Get an individual Product:\n')
         r = s.get('products/2')
         try:
             r.xml['product']
         except KeyError:
             pass
         else:
-            info = r.xml['product']
+            info = lsonsite.XMLDict(r.xml['product'])
+            print(info)
             print('Code: ' + info['code'])
             print('Description: ' + info['description']['#text'])
-            print('Sell' + info['sell'])
-        print('\n-----------------------------------------------------\n')
+            sell_price = str(round(float(info['sell_price']),2))
+            print('Sell: ' + sell_price)
+        print('-----------------------------------------------------\n')
+
+        print("# Try to get a Product that doesn't exist:\n")
+        try:
+            r= s.get('products/1000000')
+        except lsonsite.RequestException:
+            pass
+
 
 if __name__ == '__main__':
     main()
